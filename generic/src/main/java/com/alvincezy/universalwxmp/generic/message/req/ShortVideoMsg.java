@@ -16,6 +16,7 @@ public class ShortVideoMsg extends VideoMsg {
 
 
     public static class Builder extends VideoMsg.Builder {
+
         @Override
         public ShortVideoMsg build() {
             return new ShortVideoMsg(msgId, from, to, createTime, mediaId, thumbMediaId);

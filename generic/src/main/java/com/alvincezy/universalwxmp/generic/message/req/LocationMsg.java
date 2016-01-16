@@ -1,10 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Location message received.
@@ -80,20 +78,23 @@ public class LocationMsg extends RecMsg {
         private String label;
 
         @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                locationX = attrs.get(WxMsg.DOC_ELE_LOCATION_X).getDouble();
-                locationY = attrs.get(WxMsg.DOC_ELE_LOCATION_Y).getDouble();
-                scale = attrs.get(WxMsg.DOC_ELE_SCALE).getInt();
-                label = attrs.get(WxMsg.DOC_ELE_LABEL).getValue();
-            }
-            return this;
+        public LocationMsg build() {
+            return new LocationMsg(msgId, from, to, createTime, locationX, locationY, scale, label);
         }
 
         @Override
-        public LocationMsg build() {
-            return new LocationMsg(msgId, from, to, createTime, locationX, locationY, scale, label);
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_LOCATION_X, attrName)) {
+                locationX = attr.getDouble();
+            } else if (StringUtils.equals(DOC_ELE_LOCATION_Y, attrName)) {
+                locationY = attr.getDouble();
+            } else if (StringUtils.equals(DOC_ELE_SCALE, attrName)) {
+                scale = attr.getInt();
+            } else if (StringUtils.equals(DOC_ELE_LABEL, attrName)) {
+                label = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

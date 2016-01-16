@@ -1,72 +1,35 @@
 package com.alvincezy.universalwxmp.util.xml;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Administrator on 2016/1/12.
  *
  * @author alvince.zy@gmail.com
  */
-public class WxNode {
+public class WxNode extends XmlNode {
 
-    private String name;
-
-    private String value;
-
-    private Map<String, WxNode> nodeList;
+    private XmlNode mTypeNode;
 
     public WxNode(String name) {
-        setName(name);
+        super(name);
     }
 
     @Override
     public String toString() {
-        return "WxNode<" + name + ", " + value + ">";
+        return "WxNode<" + mName + ", " + mValue + ">";
     }
 
-    public void addNode(WxNode node) {
-        if (node != null) {
-            list(true).put(node.getName(), node);
+    @Override
+    public void addNode(XmlNode node) {
+        if (StringUtils.equals(WxMsg.DOC_ELE_MSG_TYPE, node.getName())) {
+            mTypeNode = node;
         }
+        super.addNode(node);
     }
 
-    public double getDouble() {
-        return Double.parseDouble(value);
-    }
-
-    public int getInt() {
-        return Integer.parseInt(value);
-    }
-
-    public long getLong() {
-        return Long.parseLong(value);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public Map<String, WxNode> list() {
-        return list(false);
-    }
-
-    public Map<String, WxNode> list(boolean makeNew) {
-        if (nodeList == null && makeNew) {
-            nodeList = new HashMap<String, WxNode>();
-        }
-        return nodeList;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public XmlNode getType() {
+        return mTypeNode;
     }
 }

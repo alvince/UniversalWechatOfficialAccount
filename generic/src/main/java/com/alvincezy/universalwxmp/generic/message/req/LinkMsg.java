@@ -1,10 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Link message received.
@@ -67,19 +65,21 @@ public class LinkMsg extends RecMsg {
         private String desc;
 
         @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                title = attrs.get(WxMsg.DOC_ELE_TITLE).getValue();
-                url = attrs.get(WxMsg.DOC_ELE_URL).getValue();
-                desc = attrs.get(WxMsg.DOC_ELE_DESCRIPTION).getValue();
-            }
-            return this;
+        public LinkMsg build() {
+            return new LinkMsg(msgId, from, to, createTime, title, url, desc);
         }
 
         @Override
-        public LinkMsg build() {
-            return new LinkMsg(msgId, from, to, createTime, title, url, desc);
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_TITLE, attrName)) {
+                title = attr.getValue();
+            } else if (StringUtils.equals(DOC_ELE_URL, attrName)) {
+                url = attr.getValue();
+            } else if (StringUtils.equals(DOC_ELE_DESCRIPTION, attrName)) {
+                desc = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

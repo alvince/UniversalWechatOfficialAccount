@@ -1,10 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Common Text message received.
@@ -38,20 +36,21 @@ public class TextMsg extends RecMsg {
 
 
     public static class Builder extends RecMsg.Builder {
-        private String content;
 
-        @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                content = attrs.get(WxMsg.DOC_ELE_CONTENT).getValue();
-            }
-            return this;
-        }
+        private String content;
 
         @Override
         public TextMsg build() {
             return new TextMsg(msgId, from, to, createTime, content);
+        }
+
+        @Override
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_CONTENT, attrName)) {
+                content = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

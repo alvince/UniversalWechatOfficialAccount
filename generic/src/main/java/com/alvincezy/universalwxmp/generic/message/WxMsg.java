@@ -1,11 +1,11 @@
 package com.alvincezy.universalwxmp.generic.message;
 
 import com.alvincezy.universalwxmp.util.common.StringUtilsExtra;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Wx-mp message.
@@ -136,14 +136,23 @@ public abstract class WxMsg {
         protected String to;
         protected long createTime;
 
-        public abstract Builder attr(Map<String, WxNode> attrs);
+        public Builder attr(List<XmlNode> attrs) {
+            for (XmlNode attrNode : attrs) {
+                set(attrNode.getName(), attrNode);
+            }
+            return this;
+        }
 
         public abstract WxMsg build();
 
-        protected void set(Map<String, WxNode> attrs) {
-            from = attrs.get(WxMsg.DOC_ELE_FROM_USER_NAME).getValue();
-            to = attrs.get(WxMsg.DOC_ELE_TO_USER_NAME).getValue();
-            createTime = attrs.get(WxMsg.DOC_ELE_CREATE_TIME).getLong();
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_FROM_USER_NAME, attrName)) {
+                from = attr.getValue();
+            } else if (StringUtils.equals(DOC_ELE_TO_USER_NAME, attrName)) {
+                to = attr.getValue();
+            } else if (StringUtils.equals(DOC_ELE_CREATE_TIME, attrName)) {
+                createTime = attr.getLong();
+            }
         }
     }
 }

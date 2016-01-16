@@ -1,10 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
 
 /**
  * Voice message received.
@@ -59,25 +57,23 @@ public class VoiceMsg extends MediaMsg {
         private String recongnition;
 
         @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                format = attrs.get(DOC_ELE_FORMAT).getValue();
-                WxNode recon = attrs.get(DOC_ELE_RECOGNITION);
-                if (recon != null) {
-                    recongnition = recon.getValue();
-                }
-            }
-            return this;
-        }
-
-        @Override
         public VoiceMsg build() {
             VoiceMsg msg = new VoiceMsg(msgId, from, to, createTime, mediaId, format);
             if (recongnition != null) {
                 msg.setRecongnition(recongnition);
             }
             return msg;
+        }
+
+        @Override
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_FORMAT, attrName)) {
+                format = attr.getValue();
+            } else if (StringUtils.equals(DOC_ELE_RECOGNITION, attrName)) {
+                recongnition = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

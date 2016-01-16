@@ -1,9 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Administrator on 2016/1/12.
@@ -35,12 +34,16 @@ public abstract class MediaMsg extends RecMsg {
 
 
     protected static abstract class Builder extends RecMsg.Builder {
+
         protected String mediaId;
 
         @Override
-        protected void set(Map<String, WxNode> attrs) {
-            super.set(attrs);
-            mediaId = attrs.get(DOC_ELE_MEDIA_ID).getValue();
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_MEDIA_ID, attrName)) {
+                mediaId = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

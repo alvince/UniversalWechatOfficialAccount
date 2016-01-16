@@ -1,9 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Image message received.
@@ -41,17 +40,16 @@ public class ImageMsg extends MediaMsg {
         private String picUrl;
 
         @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                picUrl = attrs.get(DOC_ELE_PIC_URL).getValue();
-            }
-            return this;
+        public ImageMsg build() {
+            return new ImageMsg(msgId, from, to, createTime, mediaId, picUrl);
         }
 
         @Override
-        public ImageMsg build() {
-            return new ImageMsg(msgId, from, to, createTime, mediaId, picUrl);
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_PIC_URL, attrName)) {
+                picUrl = attr.getValue();
+            }
+            super.set(attrName, attr);
         }
     }
 }

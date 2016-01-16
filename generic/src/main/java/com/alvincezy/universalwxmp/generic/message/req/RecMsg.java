@@ -1,10 +1,9 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
 import com.alvincezy.universalwxmp.generic.message.WxMsg;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Message received from wx-server.
@@ -61,12 +60,16 @@ public abstract class RecMsg extends WxMsg {
 
 
     protected static abstract class Builder extends WxMsg.Builder {
+
         protected long msgId;
 
         @Override
-        protected void set(Map<String, WxNode> attrs) {
-            super.set(attrs);
-            msgId = attrs.get(WxMsg.DOC_ELE_MSG_ID).getLong();
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_MSG_ID, attrName)) {
+                msgId = attr.getLong();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }

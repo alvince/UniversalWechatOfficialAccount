@@ -3,6 +3,7 @@ package com.alvincezy.universalwxmp.generic.message;
 import com.alvincezy.universalwxmp.generic.message.req.*;
 import com.alvincezy.universalwxmp.util.xml.TransformException;
 import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.XmlTransformer;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
@@ -16,6 +17,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,11 +85,11 @@ public class WxMsgWrapper {
         parser.parse(xmlStream, handler);
 
         WxNode root = handler.result();
-        Map<String, WxNode> nodes = root.list();
+        List<XmlNode> nodes = root.list();
         System.out.println(nodes);
         WxMsgWrapper wrapper = new WxMsgWrapper();
 
-        String msgType = root.list().get(WxMsg.DOC_ELE_MSG_TYPE).getValue();
+        String msgType = root.getType().getValue();
         if (StringUtils.equals(RecMsg.MSG_TYPE_IMAGE, msgType)) {
             wrapper.type = Type.IMAGE;
             wrapper.msg = new ImageMsg.Builder().attr(nodes).build();

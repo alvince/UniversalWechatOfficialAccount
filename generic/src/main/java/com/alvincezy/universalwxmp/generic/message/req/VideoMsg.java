@@ -1,10 +1,8 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
-
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Video message received.
@@ -38,20 +36,21 @@ public class VideoMsg extends MediaMsg {
     
     
     public static class Builder extends MediaMsg.Builder {
-        protected String thumbMediaId;
 
-        @Override
-        public Builder attr(Map<String, WxNode> attrs) {
-            if (attrs != null && !attrs.isEmpty()) {
-                set(attrs);
-                thumbMediaId = attrs.get(WxMsg.DOC_ELE_THUMB_MEDIA_ID).getValue();
-            }
-            return this;
-        }
+        protected String thumbMediaId;
 
         @Override
         public VideoMsg build() {
             return new VideoMsg(msgId, from, to, createTime, mediaId, thumbMediaId);
+        }
+
+        @Override
+        protected void set(String attrName, XmlNode attr) {
+            if (StringUtils.equals(DOC_ELE_THUMB_MEDIA_ID, attrName)) {
+                thumbMediaId = attr.getValue();
+            } else {
+                super.set(attrName, attr);
+            }
         }
     }
 }
