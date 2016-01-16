@@ -88,9 +88,6 @@ public class XmlBuilder {
                         node.addNode(subNode);
                     }
                 }
-                if (annoInfo != null && annoInfo.isEmbed()) {
-                    //node.setName();
-                }
             }
         } else {
             if (StringUtils.isEmpty(annotatedName)) {
