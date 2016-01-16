@@ -10,6 +10,9 @@ import org.xml.sax.SAXException;
 
 import javax.xml.transform.sax.TransformerHandler;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * Created by Administrator on 2016/1/14.
@@ -18,6 +21,7 @@ import java.lang.reflect.Field;
  */
 public class XmlBuilder {
 
+    private static final String NODE_LIST_ITEM_TAG = "item";
     private static final String NODE_VALUE_NUMBER_DEF = "0";
 
     public static XmlNode parseToXml(Object obj) throws IllegalAccessException {
@@ -82,7 +86,7 @@ public class XmlBuilder {
     private static XmlNode tranformBasicType(Field field, ElementInfo annoInfo, Object obj) throws IllegalAccessException {
         boolean isNumberType = ClassUtils.isNumberType(field.getType());
 
-        String name = getMarkName(annoInfo, field.getName());
+        String name = getTagName(annoInfo, field.getName());
         XmlNode node = new XmlNode(name);
 
         if (annoInfo != null) {
@@ -99,26 +103,41 @@ public class XmlBuilder {
     }
 
     private static XmlNode transformRefType(Field field, ElementInfo annoInfo, Object obj) throws IllegalAccessException {
+        String annotatedName = getTagName(annoInfo, StringUtils.EMPTY);
+        XmlNode node = new XmlNode(annotatedName);
         Class<?> fieldCls = field.getType();
-        String name = getMarkName(annoInfo, StringUtils.EMPTY);
-        if (StringUtils.isEmpty(name)) {
-            name = getMarkName(ElementInfo.build(
-                    fieldCls.getAnnotation(Element.class)), field.getName());
-        }
-        XmlNode node = new XmlNode(name);
-
 
         if (ClassUtils.isCollectionType(fieldCls)) {
-            // TODO handle collection field
-            parseToXml(fieldCls, name, null);
+            Collection list = (Collection) ClassUtils.getFieldValue(field, obj);
+            if (!list.isEmpty()) {
+                Type listItemType = field.getGenericType();
+                System.out.println("========>>>" + listItemType);
+                if (listItemType instanceof ParameterizedType) {
+                    Class listParamCls = (Class) ((ParameterizedType) listItemType).getActualTypeArguments()[0];
+                    ElementInfo listParamClsEle = ElementInfo.build((Element) listParamCls.getAnnotation(Element.class));
+                    String listParamTagName = listParamClsEle == null || listParamClsEle.isEmbed()
+                            ? NODE_LIST_ITEM_TAG : listParamCls.getSimpleName();
+                    for (Object listItem : list) {
+                        XmlNode subNode = parseToXml(listItem.getClass(), listItem, null);
+                        subNode.setName(listParamTagName);
+                        node.addNode(subNode);
+                    }
+                }
+                if (annoInfo != null && annoInfo.isEmbed()) {
+                    //node.setName();
+                }
+            }
         } else {
+            if (StringUtils.isEmpty(annotatedName)) {
+                node.setName(fieldCls.getSimpleName());
+            }
             parseToXml(fieldCls, ClassUtils.getFieldValue(field, obj), node);
         }
 
         return node;
     }
 
-    private static String getMarkName(ElementInfo elementAnnotation, String defName) {
+    private static String getTagName(ElementInfo elementAnnotation, String defName) {
         if (elementAnnotation != null) {
             String markedName = elementAnnotation.getName();
             if (!StringUtils.isEmpty(markedName)) {
