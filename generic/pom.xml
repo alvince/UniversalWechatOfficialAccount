@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alvince</groupId>
-    <artifactId>universal-mm-mp</artifactId>
+    <artifactId>universal-wechat-official</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>universal-mm-mp Maven Webapp</name>
+    <name>universal-wechat-official Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -55,7 +55,7 @@
     </dependencies>
 
     <build>
-        <finalName>universal-mm-mp</finalName>
+        <finalName>universal-wechat-official</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
