@@ -1,6 +1,7 @@
 package com.alvincezy.universalwxmp.generic.message;
 
 import com.alvincezy.universalwxmp.generic.message.req.*;
+import com.alvincezy.universalwxmp.util.xml.TransformException;
 import com.alvincezy.universalwxmp.util.xml.WxNode;
 import com.alvincezy.universalwxmp.util.xml.XmlTransformer;
 import org.apache.commons.lang3.StringUtils;
@@ -43,22 +44,28 @@ public class WxMsgWrapper {
         this.msg = msg;
     }
 
-    public String transform2Xml() {
+    /**
+     * Transform message to xml-text.
+     * <br/>
+     * Will throw {@link IllegalStateException} when the msg is not set.
+     *
+     * @return xml text
+     * @throws TransformException when transform exception happened.
+     */
+    public String transform2Xml() throws TransformException {
         if (msg == null) {
             throw new IllegalStateException("No message to transform: no msg set.");
         }
 
-        String xml = null;
         try {
             return XmlTransformer.transform(msg);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new TransformException(e.getMessage(), e);
         } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
+            throw new TransformException(e.getMessage(), e);
         } catch (SAXException e) {
-            e.printStackTrace();
+            throw new TransformException(e.getMessage(), e);
         }
-        return StringUtils.EMPTY;
     }
 
     /**

@@ -5,10 +5,7 @@ import com.alvincezy.universalwxmp.util.common.StringUtilsExtra;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import com.alvincezy.universalwxmp.util.xml.parser.ElementInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
-import javax.xml.transform.sax.TransformerHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -35,7 +32,6 @@ public class XmlBuilder {
     }
 
     private static XmlNode parseToXml(Class<?> clazz, Object obj, XmlNode parent) throws IllegalAccessException {
-        System.out.println("Parsing class>>>" + clazz.getName());
         XmlNode node = parent == null ? new XmlNode() : parent;
         for (Field field : ClassUtils.getAllMemberFields(clazz)) {
             ElementInfo annoInfo = ElementInfo.build(field.getAnnotation(Element.class));
@@ -81,7 +77,6 @@ public class XmlBuilder {
             Collection list = (Collection) ClassUtils.getFieldValue(field, obj);
             if (!list.isEmpty()) {
                 Type listItemType = field.getGenericType();
-                System.out.println("========>>>" + listItemType);
                 if (listItemType instanceof ParameterizedType) {
                     Class listParamCls = (Class) ((ParameterizedType) listItemType).getActualTypeArguments()[0];
                     ElementInfo listParamClsEle = ElementInfo.build((Element) listParamCls.getAnnotation(Element.class));

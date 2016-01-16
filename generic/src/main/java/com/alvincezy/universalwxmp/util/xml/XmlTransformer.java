@@ -12,7 +12,6 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/1/14.
@@ -22,9 +21,11 @@ import java.util.Map;
 public class XmlTransformer {
 
     private static final String ENCODING = "UTF-8";
+
     private static SAXTransformerFactory mSAXTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
-    public static String transform(Object obj) throws IllegalAccessException, TransformerConfigurationException, SAXException {
+    public static String transform(Object obj) throws
+            IllegalAccessException, TransformerConfigurationException, SAXException {
         // build object' xml nodes
         XmlNode root = XmlBuilder.parseToXml(obj);
 
@@ -77,8 +78,8 @@ public class XmlTransformer {
         boolean isParent = node.hasSubset();
         createXmlElement(handler, node);
         if (node.hasSubset()) {
-            for (Map.Entry<String, XmlNode> child : node.list().entrySet()) {
-                transformXmlNode(handler, child.getValue());
+            for (XmlNode child : node.list()) {
+                transformXmlNode(handler, child);
             }
         }
 

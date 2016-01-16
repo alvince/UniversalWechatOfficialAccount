@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/1/14.
@@ -16,19 +16,19 @@ import java.util.Map;
  */
 public class XmlNode {
 
-    private String mUri;
+    protected String mUri;
 
-    private String lName;
+    protected String lName;
 
-    private String mName;
+    protected String mName;
 
-    private String mValue;
+    protected String mValue;
 
-    private Attributes mAttributes;
+    protected Attributes mAttributes;
 
-    private Map<String, XmlNode> mSublist;
+    protected List<XmlNode> mSublist;
 
-    private boolean mUseCData;
+    protected boolean mUseCData;
 
     public XmlNode() {
         this(null, null);
@@ -57,9 +57,9 @@ public class XmlNode {
     public void addNode(XmlNode node) {
         if (node != null) {
             if (mSublist == null) {
-                mSublist = new HashMap<String, XmlNode>();
+                mSublist = new ArrayList<XmlNode>();
             }
-            mSublist.put(node.getName(), node);
+            mSublist.add(node);
         }
     }
 
@@ -83,8 +83,8 @@ public class XmlNode {
         return StringUtils.isEmpty(mName) && StringUtils.isEmpty(mValue) && StringUtils.isEmpty(lName) && StringUtils.isEmpty(mUri) && (mAttributes == null);
     }
 
-    public Map<String, XmlNode> list() {
-        return mSublist == null ? Collections.<String, XmlNode>emptyMap() : mSublist;
+    public List<XmlNode> list() {
+        return mSublist == null ? Collections.<XmlNode>emptyList() : mSublist;
     }
 
     public Attributes getAttributes() {
