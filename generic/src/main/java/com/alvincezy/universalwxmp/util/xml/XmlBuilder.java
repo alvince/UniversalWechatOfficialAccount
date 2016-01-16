@@ -34,36 +34,6 @@ public class XmlBuilder {
         return root;
     }
 
-    public static void startXmlElement(TransformerHandler handler, String name, Object value, Attributes attributes, boolean useCData)
-            throws SAXException {
-        startXmlElement(handler, name, value, attributes, useCData, false);
-    }
-
-    public static void startXmlElement(TransformerHandler handler, String name, Object value, Attributes attributes, boolean useCData, boolean autoEnd)
-            throws SAXException {
-        // start element
-        handler.startElement(StringUtils.EMPTY, StringUtils.EMPTY, name, attributes);
-
-        if (value != null) {
-            String text = String.valueOf(value);
-
-            if (!StringUtils.isEmpty(text)) {
-                if (useCData) {
-                    handler.startCDATA();
-                    handler.characters(text.toCharArray(), 0, text.length());
-                    handler.endCDATA();
-                } else {
-                    handler.characters(text.toCharArray(), 0, text.length());
-                }
-            }
-        }
-
-        // auto end element
-        if (autoEnd) {
-            handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, name);
-        }
-    }
-
     private static XmlNode parseToXml(Class<?> clazz, Object obj, XmlNode parent) throws IllegalAccessException {
         System.out.println("Parsing class>>>" + clazz.getName());
         XmlNode node = parent == null ? new XmlNode() : parent;
