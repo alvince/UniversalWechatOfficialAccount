@@ -1,6 +1,7 @@
 package com.alvincezy.universalwxmp.generic.message;
 
 import com.alvincezy.universalwxmp.generic.message.req.*;
+import com.alvincezy.universalwxmp.generic.message.req.event.EventMsg;
 import com.alvincezy.universalwxmp.util.xml.TransformException;
 import com.alvincezy.universalwxmp.util.xml.WxNode;
 import com.alvincezy.universalwxmp.util.xml.XmlNode;
@@ -33,7 +34,7 @@ public class WxMsgWrapper {
      * Type of WeChat-mp message received.
      */
     public enum Type {
-        IMAGE, LINK, LOCATION, TEXT, SHORT_VIDEO, VIDEO, VOICE
+        EVENT, IMAGE, LINK, LOCATION, TEXT, SHORT_VIDEO, VIDEO, VOICE
     }
 
     public WxMsg msg;
@@ -86,11 +87,10 @@ public class WxMsgWrapper {
 
         WxNode root = handler.result();
         List<XmlNode> nodes = root.list();
-        System.out.println(nodes);
         WxMsgWrapper wrapper = new WxMsgWrapper();
 
         String msgType = root.getType().getValue();
-        if (StringUtils.equals(RecMsg.MSG_TYPE_IMAGE, msgType)) {
+        if (StringUtils.equals(WxMsg.MSG_TYPE_IMAGE, msgType)) {
             wrapper.type = Type.IMAGE;
             wrapper.msg = new ImageMsg.Builder().attr(nodes).build();
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_LINK, msgType)) {
@@ -99,18 +99,21 @@ public class WxMsgWrapper {
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_LOCATION, msgType)) {
             wrapper.type = Type.LOCATION;
             wrapper.msg = new LocationMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(RecMsg.MSG_TYPE_TEXT, msgType)) {
+        } else if (StringUtils.equals(WxMsg.MSG_TYPE_TEXT, msgType)) {
             wrapper.type = Type.TEXT;
             wrapper.msg = new TextMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(RecMsg.MSG_TYPE_VIDEO, msgType)) {
+        } else if (StringUtils.equals(WxMsg.MSG_TYPE_VIDEO, msgType)) {
             wrapper.type = Type.VIDEO;
             wrapper.msg = new VideoMsg.Builder().attr(nodes).build();
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_VIDEO_SHORT, msgType)) {
             wrapper.type = Type.SHORT_VIDEO;
             wrapper.msg = new ShortVideoMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(RecMsg.MSG_TYPE_VOICE, msgType)) {
+        } else if (StringUtils.equals(WxMsg.MSG_TYPE_VOICE, msgType)) {
             wrapper.type = Type.VOICE;
             wrapper.msg = new VoiceMsg.Builder().attr(nodes).build();
+        } else if (StringUtils.equals(WxMsg.MSG_TYPE_EVENT, msgType)) {
+            wrapper.type = Type.EVENT;
+            wrapper.msg = new EventMsg.Builder().attr(nodes).build();
         }
 
         return wrapper;

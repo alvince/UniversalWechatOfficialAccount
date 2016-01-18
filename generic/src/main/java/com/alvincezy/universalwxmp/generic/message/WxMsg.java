@@ -38,6 +38,11 @@ public abstract class WxMsg {
     public static final String DOC_ELE_URL = "Url";
 
     /**
+     * Message type of event msg
+     */
+    public static final String MSG_TYPE_EVENT = "event";
+
+    /**
      * Message type of image msg
      */
     public static final String MSG_TYPE_IMAGE = "image";

@@ -25,8 +25,9 @@ public class WxNode extends XmlNode {
     public void addNode(XmlNode node) {
         if (StringUtils.equals(WxMsg.DOC_ELE_MSG_TYPE, node.getName())) {
             mTypeNode = node;
+        } else {
+            super.addNode(node);
         }
-        super.addNode(node);
     }
 
     public XmlNode getType() {
