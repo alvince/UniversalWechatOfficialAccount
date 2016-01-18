@@ -13,16 +13,16 @@ import org.apache.commons.lang3.StringUtils;
 @Element(embed = true)
 public class NewsArticle {
 
-    @Element(name = WxMsg.DOC_ELE_DESCRIPTION)
+    @Element(name = WxMsg.DOC_ELE_DESCRIPTION, raw = false)
     protected String mDesc;
 
-    @Element(name = WxMsg.DOC_ELE_TITLE)
+    @Element(name = WxMsg.DOC_ELE_TITLE, raw = false)
     protected String mTitle;
 
-    @Element(name = WxMsg.DOC_ELE_PIC_URL)
+    @Element(name = WxMsg.DOC_ELE_PIC_URL, raw = false)
     protected String mPicUrl;
 
-    @Element(name = WxMsg.DOC_ELE_URL)
+    @Element(name = WxMsg.DOC_ELE_URL, raw = false)
     protected String mUrl;
 
     public NewsArticle() {
