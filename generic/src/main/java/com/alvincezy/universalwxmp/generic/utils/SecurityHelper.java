@@ -1,6 +1,7 @@
 package com.alvincezy.universalwxmp.generic.utils;
 
-import java.util.Arrays;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Administrator on 2016/1/14.
@@ -9,12 +10,23 @@ import java.util.Arrays;
  */
 public class SecurityHelper {
 
-    public static boolean validate(String signature, String token, String timestamp, String nonce) {
-        String[] tmpArr = new String[] {token, timestamp, nonce};
-        Arrays.sort(tmpArr);
-        String tmpStr = Arrays.toString(tmpArr);
+    private static final char[] DIGIT_HEX = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E'};
 
-        //String encriptStr =
-        return true;
+    public static String getSHA1Digest(String text) throws NoSuchAlgorithmException {
+        StringBuilder sha1Str = new StringBuilder();
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+
+        for (byte b : digest.digest(text.getBytes())) {
+            sha1Str.append(convert2Hex(b));
+        }
+
+        return sha1Str.toString();
+    }
+
+    private static String convert2Hex(byte b) {
+        char[] tmpArr = new char[2];
+        tmpArr[0] = DIGIT_HEX[(b >>> 4) & 0xFF];
+        tmpArr[1] = DIGIT_HEX[b & 0xFF];
+        return new String(tmpArr);
     }
 }
