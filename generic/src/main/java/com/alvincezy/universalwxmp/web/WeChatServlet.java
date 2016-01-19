@@ -2,7 +2,7 @@ package com.alvincezy.universalwxmp.web;
 
 import com.alvincezy.universalwxmp.generic.config.GenericConfig;
 import com.alvincezy.universalwxmp.generic.utils.SecurityHelper;
-import com.alvincezy.universalwxmp.web.controller.CoreController;
+import com.alvincezy.universalwxmp.web.controller.WeChatCoreController;
 import com.alvincezy.universalwxmp.web.util.ReqHelper;
 import com.alvincezy.universalwxmp.web.util.RespHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,7 @@ import java.util.Properties;
  *
  * @author alvince.zy@gmail.com
  */
-public class ServiceServlet extends HttpServlet {
+public class WeChatServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
@@ -36,21 +36,17 @@ public class ServiceServlet extends HttpServlet {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream(getClass().getResource("/wechat_official_generic_config.properties").getPath()));
-                for (Object key : properties.keySet()) {
-                    String k = (String) key;
-                    config.put(k, properties.getProperty(k));
-                }
+                config.set(properties);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         GenericConfig config = (GenericConfig) getServletContext().getAttribute(GenericConfig.TAG);
-        String token = (String) config.get(GenericConfig.CONF_WECHAT_OFFICIAL_TOKEN);
+        String token = config.getWeChatToken();
         boolean validate = validateWechatReq(token, ReqHelper.getParam(req, "signature"),
                 ReqHelper.getParam(req, "timestamp"), ReqHelper.getParam(req, "nonce"));
         if (validate) {
@@ -62,7 +58,8 @@ public class ServiceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CoreController controller = new CoreController();
+        RespHelper.setContentType(resp, RespHelper.CONTENT_TYPE_DEF);
+        WeChatCoreController controller = new WeChatCoreController();
         controller.handleWxMessage(req, resp);
     }
 
@@ -84,7 +81,8 @@ public class ServiceServlet extends HttpServlet {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        System.out.println(digest);
 
-        return StringUtils.equals(signature, digest);
+        return StringUtils.equalsIgnoreCase(signature, digest);
     }
 }
