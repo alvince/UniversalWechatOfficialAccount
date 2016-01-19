@@ -11,16 +11,16 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author alvince.zy@gmail.com
  */
-public class VideoMsg extends MediaMsg {
+public class RespVideo extends MediaMsg {
 
     @Element(name = DOC_ELE_VIDEO)
     protected Video mMedia;
 
-    public VideoMsg() {
+    public RespVideo() {
         this(null, null, null, null, null);
     }
 
-    public VideoMsg(String fromUser, String toUser, String mediaId, String title, String description) {
+    public RespVideo(String fromUser, String toUser, String mediaId, String title, String description) {
         super(fromUser, toUser, MSG_TYPE_VIDEO, mediaId);
         setTitle(title);
         setDescription(description);

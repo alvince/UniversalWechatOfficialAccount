@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author alvince.zy@gmail.com
  */
-public class MusicMsg extends RespMsg {
+public class RespMusic extends RespMsg {
 
     private static final String DOC_ELE_MUSIC_URL = "MusicUrl";
     private static final String DOC_ELE_HQ_MUSIC_URL = "HqMusicUrl";
@@ -17,15 +17,15 @@ public class MusicMsg extends RespMsg {
     @Element(name = DOC_ELE_MUSIC)
     private Music mMusic;
 
-    public MusicMsg() {
+    public RespMusic() {
         this(null, null, null, null, null);
     }
 
-    public MusicMsg(String fromUser, String toUser, String musicUrl, String hqMusicUrl, String thumbMediaId) {
+    public RespMusic(String fromUser, String toUser, String musicUrl, String hqMusicUrl, String thumbMediaId) {
         this(fromUser, toUser, null, null, musicUrl, hqMusicUrl, thumbMediaId);
     }
 
-    public MusicMsg(String fromUser, String toUser, String title, String desc, String musicUrl, String hqMusicUrl, String thumbMediaId) {
+    public RespMusic(String fromUser, String toUser, String title, String desc, String musicUrl, String hqMusicUrl, String thumbMediaId) {
         super(fromUser, toUser, MSG_TYPE_MUSIC);
         setTitle(title);
         setDescription(desc);

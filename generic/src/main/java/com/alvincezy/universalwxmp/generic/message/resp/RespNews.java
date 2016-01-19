@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author alvince.zy@gmail.com
  */
-public class NewsMsg extends RespMsg {
+public class RespNews extends RespMsg {
 
     @Element(name = DOC_ELE_ARTICLES, embed = true)
     private List<NewsArticle> mArticles;
@@ -18,7 +18,7 @@ public class NewsMsg extends RespMsg {
     @Element(name = DOC_ELE_ARTICLE_COUNT)
     private int mArticleCount;
 
-    public NewsMsg(String fromUser, String toUser) {
+    public RespNews(String fromUser, String toUser) {
         super(fromUser, toUser, MSG_TYPE_NEWS);
         mArticleCount = 0;
     }

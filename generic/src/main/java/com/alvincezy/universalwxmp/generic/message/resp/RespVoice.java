@@ -3,19 +3,19 @@ package com.alvincezy.universalwxmp.generic.message.resp;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 
 /**
- * Image resp-msg.
+ * Voice resp-msg.
  * <p/>
  * Created by Administrator on 2016/1/12.
  *
  * @author alvince.zy@gmail.com
  */
-public class ImageMsg extends MediaMsg {
+public class RespVoice extends MediaMsg {
 
-    @Element(name = DOC_ELE_IMAGE)
+    @Element(name = DOC_ELE_VOICE)
     private Media mMedia;
 
-    public ImageMsg(String fromUser, String toUser, String mediaId) {
-        super(fromUser, toUser, MSG_TYPE_IMAGE, mediaId);
+    public RespVoice(String fromUser, String toUser, String mediaId) {
+        super(fromUser, toUser, MSG_TYPE_VOICE, mediaId);
     }
 
     @Override
