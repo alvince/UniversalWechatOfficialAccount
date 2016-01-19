@@ -8,15 +8,9 @@
 
     <display-name>Wechat Official Web Application</display-name>
 
-    <context-param>
-        <param-name>ContextParameter</param-name>
-        <param-value>test</param-value>
-        <description>It is a test parameter.</description>
-    </context-param>
-
     <servlet>
         <servlet-name>core_servlet</servlet-name>
-        <servlet-class>com.alvincezy.universalwxmp.web.ServiceServlet</servlet-class>
+        <servlet-class>com.alvincezy.universalwxmp.web.WeChatServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
