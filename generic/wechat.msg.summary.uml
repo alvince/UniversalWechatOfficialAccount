@@ -1,0 +1,79 @@
+@startuml
+
+package message {
+
+    /' classes '/
+
+    class WxMsg << (A,orchid) >> {
+      -long createTime
+      -String toUser
+      -String fromUser
+      -String msgType
+    }
+
+    package req {
+        WxMsg <|-- RecMsg
+        RecMsg <|-- req.MediaMsg
+        RecMsg <|-- LinkMsg
+        RecMsg <|-- LocationMsg
+        RecMsg <|-- TextMsg
+        req.MediaMsg <|-- ImageMsg
+        req.MediaMsg <|-- VideoMsg
+        req.MediaMsg <|-- VoiceMsg
+        VideoMsg <|-- ShortVideoMsg
+    }
+
+    package resp {
+        WxMsg <|-- RespMsg
+        RespMsg <|-- resp.MediaMsg
+        RespMsg <|-- RespMusic
+        RespMsg <|-- RespNews
+        RespMsg <|-- RespText
+        resp.MediaMsg <|-- RespImage
+        resp.MediaMsg <|-- RespVideo
+        resp.MediaMsg <|-- RespVoice
+        RespNews o-- NewsArticle
+    }
+
+    /' classes defined '/
+
+    package req {
+        class RecMsg << (A,orchid) >> {
+            -String msgId
+        }
+
+        class req.MediaMsg << (A,orchid) >> {
+            -String mediaId
+        }
+
+        class LinkMsg {
+            -String title
+            -String url
+            -String desc
+        }
+
+        class LocationMsg {
+            -double locX
+            -double locY
+            -int scale
+            -String label
+        }
+
+        class TextMsg {
+            -String content
+        }
+    }
+
+    package resp {
+        class RespMsg << (A,orchid) >>
+
+        class resp.MediaMsg << (A,orchid) >> {
+             -String mediaId
+        }
+
+        class NewsArticle {
+        }
+    }
+}
+
+@enduml
