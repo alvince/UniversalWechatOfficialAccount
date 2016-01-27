@@ -1,77 +1,148 @@
 @startuml
 
 package message {
-
-    /' classes '/
+    ' interface Serializable <|.. WxMsg
 
     class WxMsg << (A,orchid) >> {
-      -long createTime
-      -String toUser
-      -String fromUser
-      -String msgType
+      -createTime : long
+      -toUser : String
+      -fromUser : String
+      -msgType : String
     }
 
     package req {
         WxMsg <|-- RecMsg
-        RecMsg <|-- req.MediaMsg
+        RecMsg <|-- EventMsg
         RecMsg <|-- LinkMsg
         RecMsg <|-- LocationMsg
         RecMsg <|-- TextMsg
+        RecMsg <|-- req.MediaMsg
+
         req.MediaMsg <|-- ImageMsg
         req.MediaMsg <|-- VideoMsg
         req.MediaMsg <|-- VoiceMsg
+        EventMsg <|-- ActionEvent
+        EventMsg <|-- LocationEvent
+        EventMsg <|-- SubscribeEvent
+
         VideoMsg <|-- ShortVideoMsg
+        ActionEvent <|-- TicketEvent
+
+        class RecMsg << (A,orchid) >> {
+            -msgId : String
+        }
+
+        class req.MediaMsg << (A,orchid) >> {
+            -mediaId : String
+        }
+
+        class LinkMsg {
+            -title : String
+            -url : String
+            -desc : String
+        }
+
+        class LocationMsg {
+            -locX : double
+            -locY : double
+            -scale : int
+            -label : String
+        }
+
+        class TextMsg {
+            -content : String
+        }
+
+        class ImageMsg {
+            -picUrl : String
+        }
+
+        class VideoMsg {
+            -thumbMediaId : String
+        }
+
+        class VoiceMsg {
+            -String format : String
+            -recongnition : String
+        }
+
+        /' event message '/
+
+        class EventMsg << (A,orchid) >> {
+            -event : String
+        }
+
+        class ActionEvent {
+            -eventKey : String
+        }
+
+        class LocationEvent {
+            -lat : double
+            -lng : double
+            -precision : double
+        }
+
+        class TicketEvent {
+            -ticket : String
+        }
     }
 
     package resp {
         WxMsg <|-- RespMsg
-        RespMsg <|-- resp.MediaMsg
         RespMsg <|-- RespMusic
         RespMsg <|-- RespNews
         RespMsg <|-- RespText
+        RespMsg <|-- resp.MediaMsg
+
+        RespMusic *-- Music
+        RespNews o-- NewsArticle : aggregation
         resp.MediaMsg <|-- RespImage
         resp.MediaMsg <|-- RespVideo
         resp.MediaMsg <|-- RespVoice
-        RespNews o-- NewsArticle
-    }
 
-    /' classes defined '/
+        RespImage *-- Media
+        RespVoice *-- Media
+        RespVideo *-- Video
 
-    package req {
-        class RecMsg << (A,orchid) >> {
-            -String msgId
-        }
+        Media <|-- Video
 
-        class req.MediaMsg << (A,orchid) >> {
-            -String mediaId
-        }
-
-        class LinkMsg {
-            -String title
-            -String url
-            -String desc
-        }
-
-        class LocationMsg {
-            -double locX
-            -double locY
-            -int scale
-            -String label
-        }
-
-        class TextMsg {
-            -String content
-        }
-    }
-
-    package resp {
         class RespMsg << (A,orchid) >>
 
         class resp.MediaMsg << (A,orchid) >> {
-             -String mediaId
+            -mediaId : String
+        }
+
+        class RespNews {
+            -articleCount : int
+            -articles : NewsArticle[]
+        }
+
+        class RespText {
+            -content : String
+        }
+
+        class Music {
+            -desc : String
+            -title : String
+            -musicUrl : String
+            -hqMusicUrl : String
+            -thumbMediaId : String
         }
 
         class NewsArticle {
+            -desc : String
+            -title : String
+            -picUrl : String
+            -url : String
+        }
+
+        class Media {
+            -mediaId : String
+        }
+
+        class Video {
+            -desc : String
+            -title : String
         }
     }
 }
