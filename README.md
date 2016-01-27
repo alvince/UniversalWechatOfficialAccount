@@ -1,2 +1,2 @@
-# Universa lWechat Official Account
-Universal wechat official account web-app framework.
+# Universal Wechat Official Account
+Universal wechat official application framework.
