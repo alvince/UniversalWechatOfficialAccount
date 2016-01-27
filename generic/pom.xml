@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.alvince</groupId>
-    <artifactId>universal-wechat-official</artifactId>
-    <packaging>war</packaging>
+    <artifactId>universal-wechat-official-generic</artifactId>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>universal-wechat-official Maven Webapp</name>
+    <name>universal-wechat-official-generic Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -37,43 +37,9 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
-        <finalName>universal-wechat-official</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <url>http://localhost:8080/manager/text</url>
-                    <server>tomcat</server>
-                </configuration>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.26</version>
-                <configuration>
-                    <connectors>
-                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>8080</port>
-                        </connector>
-                    </connectors>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                </configuration>
-            </plugin>
-            -->
-        </plugins>
+        <finalName>universal-wechat-official-generic</finalName>
     </build>
 </project>
