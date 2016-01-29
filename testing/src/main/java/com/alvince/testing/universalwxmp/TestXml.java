@@ -1,10 +1,10 @@
-package com.alvincezy.universalwxmp.test;
+package com.alvince.testing.universalwxmp;
 
 import com.alvincezy.universalwxmp.generic.message.WxMsgWrapper;
 import com.alvincezy.universalwxmp.generic.message.resp.NewsArticle;
-import com.alvincezy.universalwxmp.generic.message.resp.NewsMsg;
 import com.alvincezy.universalwxmp.generic.message.resp.RespMsg;
-import com.alvincezy.universalwxmp.generic.message.resp.VideoMsg;
+import com.alvincezy.universalwxmp.generic.message.resp.RespNews;
+import com.alvincezy.universalwxmp.generic.message.resp.RespVideo;
 import org.junit.Test;
 
 import java.io.*;
@@ -34,7 +34,7 @@ public class TestXml {
 
     @Test
     public void testTransform() throws Exception {
-        RespMsg msg = new VideoMsg("from", "to", "_media_id", "_标题", "_描述");
+        RespMsg msg = new RespVideo("from", "to", "_media_id", "_标题", "_描述");
         WxMsgWrapper wrapper = new WxMsgWrapper(msg);
         String xmlStr = wrapper.transform2Xml();
         writeToFile(new File(getClass().getResource("/TestOut.xml").getPath()), xmlStr);
@@ -42,7 +42,7 @@ public class TestXml {
 
     @Test
     public void testTransformComplex() throws Exception {
-        NewsMsg msg = new NewsMsg("from", "to");
+        RespNews msg = new RespNews("from", "to");
         msg.addArticle(new NewsArticle("article", "Article_1", "PicUrl1", "Url1"));
         msg.addArticle(new NewsArticle("article", "Article_2", "PicUrl2", "Url2"));
         WxMsgWrapper wrapper = new WxMsgWrapper(msg);

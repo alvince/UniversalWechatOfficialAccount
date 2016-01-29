@@ -1,0 +1,10 @@
+<xml>
+  <ToUserName><![CDATA[toUName]]></ToUserName>
+  <FromUserName><![CDATA[fromUName]]></FromUserName>
+  <CreateTime>1348831860</CreateTime>
+  <MsgType><![CDATA[voice]]></MsgType>
+  <MediaId><![CDATA[media_id]]></MediaId>
+  <Format><![CDATA[Format]]></Format>
+  <Recognition><![CDATA[腾讯微信团队]]></Recognition>
+  <MsgId>1234567890123456</MsgId>
+</xml>
