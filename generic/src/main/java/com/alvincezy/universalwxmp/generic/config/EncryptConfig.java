@@ -80,13 +80,7 @@ public class EncryptConfig {
     }
 
     public void setEncypt(String encryptText) {
-        if (StringUtils.isEmpty(encryptText) &&
-                (StringUtils.equalsIgnoreCase("yes", encryptText)
-                        || StringUtils.equalsIgnoreCase("true", encryptText))) {
-            setEncypt(true);
-        } else {
-            setEncypt(false);
-        }
+        setEncypt(!StringUtils.isEmpty(encryptText) && (StringUtils.equalsIgnoreCase("yes", encryptText) || StringUtils.equalsIgnoreCase("true", encryptText)));
     }
 
     public void setAppId(String appId) {
