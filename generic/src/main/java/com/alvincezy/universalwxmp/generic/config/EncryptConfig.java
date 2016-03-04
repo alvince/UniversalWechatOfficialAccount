@@ -49,7 +49,7 @@ public class EncryptConfig {
 
     public void set(Properties props) {
         if (props != null) {
-            setAppId(WECHAT_OFFICIAL_APPID);
+            setAppId(props.getProperty(WECHAT_OFFICIAL_APPID));
             setToken(props.getProperty(WECHAT_OFFICIAL_SECURITY_TOKEN));
             setEncypt(props.getProperty(WECHAT_OFFICIAL_SECURITY_ENCRYPT, "false"));
             String encodingAesKey = props.getProperty(WECHAT_OFFICIAL_SECURITY_ENCODINGKEY, StringUtils.EMPTY);

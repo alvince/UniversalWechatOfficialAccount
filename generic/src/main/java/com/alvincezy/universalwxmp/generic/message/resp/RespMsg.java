@@ -1,6 +1,6 @@
 package com.alvincezy.universalwxmp.generic.message.resp;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import com.alvincezy.universalwxmp.generic.message.WXMsg;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -12,7 +12,7 @@ import java.util.Locale;
  *
  * @author alvince.zy@gmail.com
  */
-public abstract class RespMsg extends WxMsg {
+public abstract class RespMsg extends WXMsg {
 
     public static final String DOC_ELE_ARTICLES = "Articles";
     public static final String DOC_ELE_ARTICLE_COUNT = "ArticleCount";

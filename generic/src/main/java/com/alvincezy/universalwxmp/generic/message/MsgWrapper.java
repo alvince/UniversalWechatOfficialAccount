@@ -2,8 +2,8 @@ package com.alvincezy.universalwxmp.generic.message;
 
 import com.alvincezy.universalwxmp.generic.message.req.*;
 import com.alvincezy.universalwxmp.generic.message.req.event.EventMsg;
+import com.alvincezy.universalwxmp.generic.message.xml.WXNode;
 import com.alvincezy.universalwxmp.util.xml.TransformException;
-import com.alvincezy.universalwxmp.util.xml.WxNode;
 import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.XmlTransformer;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author alvince.zy@gmail.com
  */
-public class WxMsgWrapper {
+public class MsgWrapper {
 
     private static SAXParserFactory mSAXParserFactory = SAXParserFactory.newInstance();
 
@@ -37,13 +37,13 @@ public class WxMsgWrapper {
         EVENT, IMAGE, LINK, LOCATION, TEXT, SHORT_VIDEO, VIDEO, VOICE
     }
 
-    public WxMsg msg;
+    public WXMsg msg;
     public Type type;
 
-    public WxMsgWrapper() {
+    public MsgWrapper() {
     }
 
-    public WxMsgWrapper(WxMsg msg) {
+    public MsgWrapper(WXMsg msg) {
         this.msg = msg;
     }
 
@@ -80,17 +80,17 @@ public class WxMsgWrapper {
      * @throws SAXException
      * @throws IOException
      */
-    public static WxMsgWrapper parseXml(InputStream xmlStream) throws ParserConfigurationException, SAXException, IOException {
+    public static MsgWrapper parseXml(InputStream xmlStream) throws ParserConfigurationException, SAXException, IOException {
         SAXParser parser = mSAXParserFactory.newSAXParser();
         WxXmlParseHandler handler = new WxXmlParseHandler();
         parser.parse(xmlStream, handler);
 
-        WxNode root = handler.result();
+        WXNode root = handler.result();
         List<XmlNode> nodes = root.list();
-        WxMsgWrapper wrapper = new WxMsgWrapper();
+        MsgWrapper wrapper = new MsgWrapper();
 
         String msgType = root.getType().getValue();
-        if (StringUtils.equals(WxMsg.MSG_TYPE_IMAGE, msgType)) {
+        if (StringUtils.equals(WXMsg.MSG_TYPE_IMAGE, msgType)) {
             wrapper.type = Type.IMAGE;
             wrapper.msg = new ImageMsg.Builder().attr(nodes).build();
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_LINK, msgType)) {
@@ -99,19 +99,19 @@ public class WxMsgWrapper {
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_LOCATION, msgType)) {
             wrapper.type = Type.LOCATION;
             wrapper.msg = new LocationMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(WxMsg.MSG_TYPE_TEXT, msgType)) {
+        } else if (StringUtils.equals(WXMsg.MSG_TYPE_TEXT, msgType)) {
             wrapper.type = Type.TEXT;
             wrapper.msg = new TextMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(WxMsg.MSG_TYPE_VIDEO, msgType)) {
+        } else if (StringUtils.equals(WXMsg.MSG_TYPE_VIDEO, msgType)) {
             wrapper.type = Type.VIDEO;
             wrapper.msg = new VideoMsg.Builder().attr(nodes).build();
         } else if (StringUtils.equals(RecMsg.MSG_TYPE_VIDEO_SHORT, msgType)) {
             wrapper.type = Type.SHORT_VIDEO;
             wrapper.msg = new ShortVideoMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(WxMsg.MSG_TYPE_VOICE, msgType)) {
+        } else if (StringUtils.equals(WXMsg.MSG_TYPE_VOICE, msgType)) {
             wrapper.type = Type.VOICE;
             wrapper.msg = new VoiceMsg.Builder().attr(nodes).build();
-        } else if (StringUtils.equals(WxMsg.MSG_TYPE_EVENT, msgType)) {
+        } else if (StringUtils.equals(WXMsg.MSG_TYPE_EVENT, msgType)) {
             wrapper.type = Type.EVENT;
             wrapper.msg = new EventMsg.Builder().attr(nodes).build();
         }
@@ -125,23 +125,23 @@ public class WxMsgWrapper {
     private static class WxXmlParseHandler extends DefaultHandler {
 
         private int eleLevel;
-        private WxNode root;
-        private Map<Integer, WxNode> nodeIndicator;
+        private WXNode root;
+        private Map<Integer, WXNode> nodeIndicator;
 
         @Override
         public void startDocument() throws SAXException {
             eleLevel = 0;
-            nodeIndicator = new HashMap<Integer, WxNode>();
+            nodeIndicator = new HashMap<Integer, WXNode>();
         }
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            if (eleLevel++ == 0 && qName.equals(WxMsg.DOC_ELE_ROOT)) {
-                root = new WxNode(qName);
+            if (eleLevel++ == 0 && qName.equals(WXMsg.DOC_ELE_ROOT)) {
+                root = new WXNode(qName);
                 nodeIndicator.put(eleLevel, root);
             } else {
-                WxNode node = new WxNode(qName);
-                WxNode parent = nodeIndicator.get(eleLevel - 1);
+                WXNode node = new WXNode(qName);
+                WXNode parent = nodeIndicator.get(eleLevel - 1);
                 parent.addNode(node);
                 nodeIndicator.put(eleLevel, node);
             }
@@ -149,7 +149,7 @@ public class WxMsgWrapper {
 
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
-            WxNode currNode = nodeIndicator.get(eleLevel);
+            WXNode currNode = nodeIndicator.get(eleLevel);
             if (currNode != null) {
                 currNode.setValue(new String(ch, start, length));
             }
@@ -166,8 +166,8 @@ public class WxMsgWrapper {
             nodeIndicator = null;
         }
 
-        public WxNode result() {
-            WxNode node = root;
+        public WXNode result() {
+            WXNode node = root;
             root = null;
             return node;
         }

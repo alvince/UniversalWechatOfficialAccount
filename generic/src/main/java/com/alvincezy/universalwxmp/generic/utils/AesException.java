@@ -15,36 +15,36 @@ public class AesException extends Exception {
     public final static int EncryptAESError = -40006;
     public final static int DecryptAESError = -40007;
     public final static int IllegalBuffer = -40008;
-    //public final static int EncodeBase64Error = -40009;
-    //public final static int DecodeBase64Error = -40010;
-    //public final static int GenReturnXmlError = -40011;
+    public final static int EncodeBase64Error = -40009;
+    public final static int DecodeBase64Error = -40010;
+    public final static int GenReturnXmlError = -40011;
 
     private int code;
 
     private static String getMessage(int code) {
         switch (code) {
             case ValidateSignatureError:
-                return "签名验证错误";
+                return "Signature verification error";
             case ParseXmlError:
-                return "xml解析失败";
+                return "Failed to parse xml";
             case ComputeSignatureError:
-                return "sha加密生成签名失败";
+                return "SHA encryption generated signature fails";
             case IllegalAesKey:
-                return "SymmetricKey非法";
+                return "Illegal SymmetricKey";
             case ValidateAppidError:
-                return "appid校验失败";
+                return "AppId verification fails";
             case EncryptAESError:
-                return "aes加密失败";
+                return "AES encryption failure";
             case DecryptAESError:
-                return "aes解密失败";
+                return "AES decryption failure";
             case IllegalBuffer:
-                return "解密后得到的buffer非法";
-//		case EncodeBase64Error:
-//			return "base64加密错误";
-//		case DecodeBase64Error:
-//			return "base64解密错误";
-//		case GenReturnXmlError:
-//			return "xml生成失败";
+                return "Illegal decryption result buffer";
+            case EncodeBase64Error:
+                return "BASE64 encryption error";
+            case DecodeBase64Error:
+                return "BASE64 decryption error";
+            case GenReturnXmlError:
+                return "Xml generation failed";
             default:
                 return null; // cannot be
         }

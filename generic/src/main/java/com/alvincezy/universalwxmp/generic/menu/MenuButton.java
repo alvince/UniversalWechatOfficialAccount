@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuButton extends WxMenu {
+public class MenuButton extends WXMenu {
 
     @JSONField(name = "sub_button")
     private List<SubButton> mSubButtons;

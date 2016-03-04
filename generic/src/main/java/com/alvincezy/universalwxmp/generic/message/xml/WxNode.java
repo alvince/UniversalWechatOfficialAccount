@@ -1,6 +1,7 @@
-package com.alvincezy.universalwxmp.util.xml;
+package com.alvincezy.universalwxmp.generic.message.xml;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import com.alvincezy.universalwxmp.generic.message.WXMsg;
+import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -8,22 +9,22 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author alvince.zy@gmail.com
  */
-public class WxNode extends XmlNode {
+public class WXNode extends XmlNode {
 
     private XmlNode mTypeNode;
 
-    public WxNode(String name) {
+    public WXNode(String name) {
         super(name);
     }
 
     @Override
     public String toString() {
-        return "WxNode<" + mName + ", " + mValue + ">";
+        return "WXNode<" + mName + ", " + mValue + ">";
     }
 
     @Override
     public void addNode(XmlNode node) {
-        if (StringUtils.equals(WxMsg.DOC_ELE_MSG_TYPE, node.getName())) {
+        if (StringUtils.equals(WXMsg.DOC_ELE_MSG_TYPE, node.getName())) {
             mTypeNode = node;
         } else {
             super.addNode(node);

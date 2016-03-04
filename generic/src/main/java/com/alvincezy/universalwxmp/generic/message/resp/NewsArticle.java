@@ -1,6 +1,6 @@
 package com.alvincezy.universalwxmp.generic.message.resp;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import com.alvincezy.universalwxmp.generic.message.WXMsg;
 import com.alvincezy.universalwxmp.util.common.StringUtilsExtra;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -13,16 +13,16 @@ import org.apache.commons.lang3.StringUtils;
 @Element(embed = true)
 public class NewsArticle {
 
-    @Element(name = WxMsg.DOC_ELE_DESCRIPTION, raw = false)
+    @Element(name = WXMsg.DOC_ELE_DESCRIPTION, raw = false)
     protected String mDesc;
 
-    @Element(name = WxMsg.DOC_ELE_TITLE, raw = false)
+    @Element(name = WXMsg.DOC_ELE_TITLE, raw = false)
     protected String mTitle;
 
-    @Element(name = WxMsg.DOC_ELE_PIC_URL, raw = false)
+    @Element(name = WXMsg.DOC_ELE_PIC_URL, raw = false)
     protected String mPicUrl;
 
-    @Element(name = WxMsg.DOC_ELE_URL, raw = false)
+    @Element(name = WXMsg.DOC_ELE_URL, raw = false)
     protected String mUrl;
 
     public NewsArticle() {

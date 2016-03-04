@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  *
  * @author yang.zhang@tyyouxi.com
  */
-public abstract class SubButton extends WxMenu {
+public abstract class SubButton extends WXMenu {
 
     @JSONField(name = "type")
     protected String mType;
