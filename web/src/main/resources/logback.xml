@@ -9,13 +9,15 @@ For professional support please see
     http://www.qos.ch/shop/products/professionalSupport
 -->
 <configuration scan="true" debu="true">
-    <property name="LOGROOT" value="${CATALINA_BASE}/logs/wechat-mp-alvince" />
+    <property name="LOGROOT" value="${log_path}/logs/wechat-mp-demo" />
 
+    <!--
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yy-MM-dd HH:mm:ss.SSS} [%thread] %-1level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    -->
     <appender name="LOCAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
@@ -23,9 +25,11 @@ For professional support please see
         <append>true</append>
         <encoding>UTF-8</encoding>
         <file>${LOGROOT}/logger.log</file>
-        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        <!--
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
-        </filter>-->
+        </filter>
+        -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGROOT}/logger.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
         </rollingPolicy>
@@ -36,8 +40,9 @@ For professional support please see
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-1level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
+
+    <root level="TRACE">
+        <!--<appender-ref ref="STDOUT"/>-->
         <appender-ref ref="LOCAL"/>
     </root>
 </configuration>
