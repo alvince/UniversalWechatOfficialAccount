@@ -14,8 +14,8 @@ import java.util.List;
  *
  * @author alvince.zy@gmail.com
  */
-@Element(name = WxMsg.DOC_ELE_ROOT)
-public abstract class WxMsg {
+@Element(name = WXMsg.DOC_ELE_ROOT)
+public abstract class WXMsg {
 
     public static final String DOC_ELE_CREATE_TIME = "CreateTime";
     public static final String DOC_ELE_CONTENT = "Content";
@@ -86,7 +86,7 @@ public abstract class WxMsg {
     @Element(name = DOC_ELE_CREATE_TIME)
     protected long mCreateTime;
 
-    public WxMsg(String fromUser, String toUser, String msgType, long createTime) {
+    public WXMsg(String fromUser, String toUser, String msgType, long createTime) {
         setFromUser(fromUser);
         setToUser(toUser);
         setMsgType(msgType);
@@ -148,7 +148,7 @@ public abstract class WxMsg {
             return this;
         }
 
-        public abstract WxMsg build();
+        public abstract WXMsg build();
 
         protected void set(String attrName, XmlNode attr) {
             if (StringUtils.equals(DOC_ELE_FROM_USER_NAME, attrName)) {

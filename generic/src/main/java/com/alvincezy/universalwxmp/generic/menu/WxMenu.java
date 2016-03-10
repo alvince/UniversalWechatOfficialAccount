@@ -7,7 +7,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  *
  * @author yang.zhang@tyyouxi.com
  */
-public abstract class WxMenu {
+public abstract class WXMenu {
 
     public static final String TYPE_CLICK = "click";
     public static final String TYPE_SCAN = "scancode_push";
@@ -16,7 +16,7 @@ public abstract class WxMenu {
     @JSONField(name = "name")
     protected String mName;
 
-    public WxMenu(String name) {
+    public WXMenu(String name) {
         setName(name);
     }
 

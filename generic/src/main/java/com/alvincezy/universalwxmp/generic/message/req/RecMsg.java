@@ -1,6 +1,6 @@
 package com.alvincezy.universalwxmp.generic.message.req;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import com.alvincezy.universalwxmp.generic.message.WXMsg;
 import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author alvince.zy@gmail.com
  */
-public abstract class RecMsg extends WxMsg {
+public abstract class RecMsg extends WXMsg {
 
     /**
      * Message type of link msg
@@ -59,7 +59,7 @@ public abstract class RecMsg extends WxMsg {
     }
 
 
-    protected static abstract class Builder extends WxMsg.Builder {
+    protected static abstract class Builder extends WXMsg.Builder {
 
         protected long msgId;
 

@@ -1,6 +1,5 @@
 package com.alvincezy.universalwxmp.util.common;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -69,8 +68,8 @@ public class ClassUtils {
         return Collection.class.isAssignableFrom(clazz);
     }
 
-    private static boolean obtainClassMemberFields(Class<?> clazz, @NotNull List<Field> fieldsTray, AccessScope scope) {
-        if (!StringUtils.equals(Object.class.getName(), clazz.getName())) {
+    private static boolean obtainClassMemberFields(Class<?> clazz, List<Field> fieldsTray, AccessScope scope) {
+        if (fieldsTray != null && !StringUtils.equals(Object.class.getName(), clazz.getName())) {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
                 int mod = field.getModifiers();

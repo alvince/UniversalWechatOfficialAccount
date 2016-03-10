@@ -1,6 +1,6 @@
 package com.alvincezy.universalwxmp.generic.message.req.event;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsg;
+import com.alvincezy.universalwxmp.generic.message.WXMsg;
 import com.alvincezy.universalwxmp.util.xml.XmlNode;
 import com.alvincezy.universalwxmp.util.xml.annotation.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author alvince.zy@gmail.com
  */
-public abstract class EventMsg extends WxMsg {
+public abstract class EventMsg extends WXMsg {
 
     public static final String EVENT_CLICK = "CLICK";
     public static final String EVENT_LOCATION = "LOCATION";
@@ -55,7 +55,7 @@ public abstract class EventMsg extends WxMsg {
     /**
      * Event msg builder.
      */
-    public static class Builder extends WxMsg.Builder {
+    public static class Builder extends WXMsg.Builder {
 
         private Event mEvent;
         private String mEventStr;

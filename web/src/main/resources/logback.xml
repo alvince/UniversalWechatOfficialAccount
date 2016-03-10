@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+For assistance related to logback-translator or configuration
+files in general, please contact the logback user mailing list
+at http://www.qos.ch/mailman/listinfo/logback-user
+
+For professional support please see
+    http://www.qos.ch/shop/products/professionalSupport
+-->
+<configuration scan="true" debu="true">
+    <property name="LOGROOT" value="${log_path}/logs/wechat-mp-demo" />
+
+    <!--
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yy-MM-dd HH:mm:ss.SSS} [%thread] %-1level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    -->
+    <appender name="LOCAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <!--for further documentation-->
+        <append>true</append>
+        <encoding>UTF-8</encoding>
+        <file>${LOGROOT}/logger.log</file>
+        <!--
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGROOT}/logger.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>1MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-1level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="TRACE">
+        <!--<appender-ref ref="STDOUT"/>-->
+        <appender-ref ref="LOCAL"/>
+    </root>
+</configuration>

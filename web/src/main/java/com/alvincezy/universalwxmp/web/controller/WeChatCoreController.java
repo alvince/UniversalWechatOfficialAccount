@@ -1,16 +1,25 @@
 package com.alvincezy.universalwxmp.web.controller;
 
-import com.alvincezy.universalwxmp.generic.message.WxMsgWrapper;
+import com.alvincezy.universalwxmp.generic.WXEncryptReqBundle;
+import com.alvincezy.universalwxmp.generic.config.EncryptConfig;
+import com.alvincezy.universalwxmp.generic.message.WXMsgs;
+import com.alvincezy.universalwxmp.generic.message.MsgWrapper;
 import com.alvincezy.universalwxmp.generic.message.req.*;
 import com.alvincezy.universalwxmp.generic.message.req.event.EventMsg;
 import com.alvincezy.universalwxmp.generic.message.resp.RespText;
-import com.alvincezy.universalwxmp.web.util.RespHelper;
+import com.alvincezy.universalwxmp.web.util.ReqHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/1/12.
@@ -19,48 +28,52 @@ import java.io.IOException;
  */
 public class WeChatCoreController {
 
-    public void handleWxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        WxMsgWrapper msgWrapper = null;
+    private static final String TAG = WeChatCoreController.class.getName();
+
+    public String handleWxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String respContent = null;
+
+        WXEncryptReqBundle wxReqBundle = ReqHelper.buildReqBundle(request);
+        getLogger().debug("post data: {}\n params: {}",
+                wxReqBundle.getPostData(), readMapContent(request.getParameterMap()));
+
+        MsgWrapper msgWrapper = null;
         try {
-            msgWrapper = WxMsgWrapper.parseXml(request.getInputStream());
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            msgWrapper = wrapMsg(wxReqBundle);
+        } catch (ParserConfigurationException | SAXException e) {
+            getLogger().trace(e.getMessage(), e);
         }
 
         if (msgWrapper != null) {
-            String respResult;
             switch (msgWrapper.type) {
                 case EVENT:
-                    respResult = handleEvent((EventMsg) msgWrapper.msg);
+                    respContent = handleEvent((EventMsg) msgWrapper.msg);
                     break;
                 case IMAGE:
-                    respResult = handleImage((ImageMsg) msgWrapper.msg);
+                    respContent = handleImage((ImageMsg) msgWrapper.msg);
                     break;
                 case LINK:
-                    respResult = handleLink((LinkMsg) msgWrapper.msg);
+                    respContent = handleLink((LinkMsg) msgWrapper.msg);
                     break;
                 case LOCATION:
-                    respResult = handleLocation((LocationMsg) msgWrapper.msg);
+                    respContent = handleLocation((LocationMsg) msgWrapper.msg);
                     break;
                 case SHORT_VIDEO:
                 case VIDEO:
-                    respResult = handleVideo((VideoMsg) msgWrapper.msg);
+                    respContent = handleVideo((VideoMsg) msgWrapper.msg);
                     break;
                 case VOICE:
-                    respResult = handleVoice((VoiceMsg) msgWrapper.msg);
+                    respContent = handleVoice((VoiceMsg) msgWrapper.msg);
                     break;
                 case TEXT:
                 default:
-                    respResult = handleText((TextMsg) msgWrapper.msg);
+                    respContent = handleText((TextMsg) msgWrapper.msg);
             }
-            RespHelper.writeResp(response, respResult);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+
+        return respContent;
     }
 
     protected String handleEvent(EventMsg event) {
@@ -92,7 +105,45 @@ public class WeChatCoreController {
         textMsg.setFromUser(msg.getToUser());
         textMsg.setToUser(msg.getFromUser());
         textMsg.setContent("Test text message!");
-        WxMsgWrapper msgWrapper = new WxMsgWrapper(textMsg);
+        MsgWrapper msgWrapper = new MsgWrapper(textMsg);
         return msgWrapper.transform2Xml();
+    }
+
+    private String read(BufferedReader reader) throws IOException {
+        StringBuilder data = new StringBuilder();
+        String input;
+        while ((input = reader.readLine()) != null) {
+            data.append(input);
+        }
+        return data.toString();
+    }
+
+    private Logger getLogger() {
+        return LoggerFactory.getLogger(TAG);
+    }
+
+    private String readMapContent(Map<String, String[]> map) {
+        StringBuilder cache = new StringBuilder();
+        for (Map.Entry<String, String[]> item : map.entrySet()) {
+            cache.append(item.getKey()).append("=");
+            String[] values = item.getValue();
+            for (String value : values) {
+                cache.append(value).append(",");
+            }
+        }
+        return cache.toString();
+    }
+
+    private MsgWrapper wrapMsg(WXEncryptReqBundle reqBundle) throws IOException, ParserConfigurationException, SAXException {
+        MsgWrapper msgWrapper;
+        if (EncryptConfig.getInstance().isEncypt()) {
+            msgWrapper = WXMsgs.parseEncrypt(reqBundle);
+        } else {
+            InputStream msgIS = new ByteArrayInputStream(reqBundle.getPostData().getBytes());
+            msgWrapper = WXMsgs.parse(msgIS);
+            msgIS.close();
+        }
+        getLogger().debug("******received message >>> {}", msgWrapper.msg);
+        return msgWrapper;
     }
 }
